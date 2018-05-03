@@ -1,11 +1,14 @@
+@media (min-width: 768px) {
+  .container {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
 body {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   font-family: Tahoma, sans-serif;
-}
-
-th {
-  white-space: nowrap;
 }
 
 .header {
@@ -13,12 +16,31 @@ th {
   border-bottom: .05rem solid #e5e5e5;
 }
 
-.button-wrapper {
-  margin-bottom: .5rem;
-}
-
 .footer {
   padding-top: 1.5rem;
   color: #777;
   border-top: .05rem solid #e5e5e5;
+}
+
+.button-wrapper {
+  margin-bottom: .5rem;
+}
+
+th {
+  white-space: nowrap;
+}
+
+#hashtags_table_wrapper {
+  margin: 0 auto 30px;
+}
+
+.navbar-reload {
+  display: inline-block;
+  width: 20px;
+  padding-top: .3125rem;
+  padding-bottom: .3125rem;
+  margin-left: 1rem;
+  font-size: 1.25rem;
+  line-height: inherit;
+  white-space: nowrap;
 }

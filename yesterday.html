@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="BNK48 Hashtags">
     <meta name="author" content="Prasong Aroonruviwat">
-    <title>BNK48 Hashtags</title>
+    <title>BNK48 Hashtags - Yesterday</title>
     <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
@@ -62,6 +62,48 @@ jQuery(function($, undefined) {
   }).ajaxStop(function() {
     spinner.stop()
   })
+
+  var t = $('#hashtags_table').DataTable({
+    ajax: 'data/20180502_related.json'
+  , info: false
+  , paging: false
+  , searching: false
+  , order: [
+      [ 4, 'desc' ]
+    ]
+  , columnDefs: [
+      { orderable: false, targets: [ 0, 1 ] }
+    ]
+  , footerCallback: function(row, data, start, end, display) {
+      var api = this.api()
+        , intVal = function(i) {
+            return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0
+          }
+        , sum2 = api.column(2).data().reduce(function (a, b) { return intVal(a) + intVal(b) }, 0)
+        , sum3 = api.column(3).data().reduce(function (a, b) { return intVal(a) + intVal(b) }, 0)
+
+      $(api.column(2).footer()).html(sum2)
+      $(api.column(3).footer()).html(sum3)
+      $(api.column(4).footer()).html(sum2+sum3)
+    }
+  })
+
+  t.on('order.dt search.dt', function() {
+    t.column(0, {search:'applied', order:'applied'}).nodes().each( function(cell, i) {
+      cell.innerHTML = i+1
+    })
+  }).draw()
+
+  $('.hashtags-wrapper .btn').on('click', function() {
+    var b = $(this).data('button')
+      , url = 'data/20180502_'
+    if (!$(this).hasClass('btn-primary')) {
+      $('.hashtags-wrapper .btn').removeClass('btn-primary')
+      $(this).addClass('btn-primary')
+      url += b+'.json'
+      t.ajax.url(url).load()
+    }
+  })
 })
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -78,6 +120,7 @@ jQuery(function($, undefined) {
     <div class="container">
       <header>
         <nav class="navbar navbar-expand-md">
+          <div class="navbar-brand">Yesterday</div>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="index.html" id="dropdown_bnk48" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">BNK48 Hashtags</a>
@@ -89,10 +132,38 @@ jQuery(function($, undefined) {
         </nav>
       </header>
       <main role="main">
-        <div class="jumbotron" style="margin-top: 1rem;">
-          <p>ใช้ Standard Twitter Streaming API ในการตรวจสอบ Hashtag ของ BNK48 ทุกๆ 30 วินาที</p>
-          <p>ข้อมูลที่รวบรวมนี้ใช้ในการศึกษา ดูความสนใจของผู้ใช้ Twitter ที่เกี่ยวกับศิลปินวง BNK48 ผ่านทาง Hashtag เท่านั้น</p>
-          <p>ไม่ได้ใช้ในเชิงธุรกิจ ข้อมูลอาจไม่ถูกต้อง 100% โปรดใช้วิจารณญาณในการรับข้อมูล</p>
+        <div class="alert alert-info" style="margin-top: 1rem;">
+          <h5 class="text-center">ข้อมูลระหว่าง 2 พ.ค. 2561 00:00 น. ถึง 3 พ.ค. 2561 00:00 น.</h5>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-5 offset-lg-1">
+            <div class="button-wrapper hashtags-wrapper">
+              Hashtags : <button type="button" class="btn btn-sm btn-primary" data-button="related">Related</button> <button type="button" class="btn btn-sm" data-button="bnk48">BNK48</button> <button type="button" class="btn btn-sm" data-button="1st">1st Gen</button> <button type="button" class="btn btn-sm" data-button="2nd">2nd Gen</button>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-10 col-lg-8">
+            <table id="hashtags_table" class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Hashtag</th>
+                  <th scope="col">Tweet</th>
+                  <th scope="col">Retweet</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th colspan="2">Total:</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </div>
       </main>
       <footer class="footer">
