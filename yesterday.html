@@ -40,7 +40,7 @@ jQuery(function($, undefined) {
       , radius: 40
       , scale: 0.5
       , corners: 1
-      , color: '#ff9900'
+      , color: '#c996c1'
       , fadeColor: 'transparent'
       , opacity: 0.25
       , rotate: 0
@@ -96,11 +96,10 @@ jQuery(function($, undefined) {
 
   $('.hashtags-wrapper .btn').on('click', function() {
     var b = $(this).data('button')
-      , url = 'data/20180502_'
+      , url = 'data/20180502_'+b+'.json'
     if (!$(this).hasClass('btn-primary')) {
       $('.hashtags-wrapper .btn').removeClass('btn-primary')
       $(this).addClass('btn-primary')
-      url += b+'.json'
       t.ajax.url(url).load()
     }
   })
