@@ -57,6 +57,20 @@ jQuery(function($, undefined) {
       , position: 'absolute'
       }
     , spinner = new Spinner(opts)
+    , t
+    , count = 0
+    , filedata
+    , filedate = ''
+    , beginDate
+    , endDate
+    , formatDate = function(d) {
+        var monthString = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
+          , str = d.getDate()+' '+monthString[d.getMonth()]
+          , year = d.getFullYear()+543
+          , hour = d.getHours()
+          , minute = d.getMinutes()
+        return str+' '+year+' '+(hour<10 ? '0'+hour : hour)+':'+(minute<10 ? '0'+minute : minute)+' น.'
+      }
 
   $(document).ajaxStart(function() {
     spinner.spin(document.body)
@@ -64,46 +78,87 @@ jQuery(function($, undefined) {
     spinner.stop()
   })
 
-  var t = $('#hashtags_table').DataTable({
-    ajax: 'data/20180503_related.json'
-  , info: false
-  , paging: false
-  , searching: false
-  , order: [
-      [ 4, 'desc' ]
-    ]
-  , columnDefs: [
-      { orderable: false, targets: [ 0, 1 ] }
-    ]
-  , footerCallback: function(row, data, start, end, display) {
-      var api = this.api()
-        , intVal = function(i) {
-            return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0
-          }
-        , sum2 = api.column(2).data().reduce(function (a, b) { return intVal(a) + intVal(b) }, 0)
-        , sum3 = api.column(3).data().reduce(function (a, b) { return intVal(a) + intVal(b) }, 0)
-
-      $(api.column(2).footer()).html(sum2)
-      $(api.column(3).footer()).html(sum3)
-      $(api.column(4).footer()).html(sum2+sum3)
-    }
+  $.getJSON('data/data.json', function(data) {
+    filedata = data
+    $('#data_select').empty()
+    $.each(data, function(key, val) {
+      if (filedate == '') {
+        var d = val.begin.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+        beginDate = new Date(d[1], d[2]-1, d[3])
+        d = val.end.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+        endDate = new Date(d[1], d[2]-1, d[3])
+        filedate = val.filedate
+      }
+      $('#data_select').append($('<option>', {value: val.filedate, text : val.begin}))
+    })
   })
 
-  t.on('order.dt search.dt', function() {
-    t.column(0, {search:'applied', order:'applied'}).nodes().each( function(cell, i) {
-      cell.innerHTML = i+1
-    })
-  }).draw()
+  function waitForFiledate() {
+    if (filedate != '') {
+      $('#data_date').html('ข้อมูลระหว่าง '+formatDate(beginDate)+' ถึง '+formatDate(endDate))
+      if (count == 0) {
+        t = $('#hashtags_table').DataTable({
+              ajax: 'data/'+filedate+'_related.json'
+            , info: false
+            , paging: false
+            , searching: false
+            , order: [
+                [ 4, 'desc' ]
+              ]
+            , columnDefs: [
+                { orderable: false, targets: [ 0, 1 ] }
+              ]
+            , footerCallback: function(row, data, start, end, display) {
+                var api = this.api()
+                  , intVal = function(i) {
+                      return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0
+                    }
+                  , sum2 = api.column(2).data().reduce(function (a, b) { return intVal(a) + intVal(b) }, 0)
+                  , sum3 = api.column(3).data().reduce(function (a, b) { return intVal(a) + intVal(b) }, 0)
+
+                $(api.column(2).footer()).html(sum2)
+                $(api.column(3).footer()).html(sum3)
+                $(api.column(4).footer()).html(sum2+sum3)
+              }
+            })
+      } else {
+        t.ajax.url('data/'+filedate+'_related.json').load()
+      }
+
+      t.on('order.dt search.dt', function() {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function(cell, i) {
+          cell.innerHTML = i+1
+        })
+      }).draw()
+    } else {
+      setTimeout(waitForFiledate, 1000)
+    }
+  }
 
   $('.hashtags-wrapper .btn').on('click', function() {
     var b = $(this).data('button')
-      , url = 'data/20180503_'+b+'.json'
     if (!$(this).hasClass('btn-primary')) {
       $('.hashtags-wrapper .btn').removeClass('btn-primary')
       $(this).addClass('btn-primary')
-      t.ajax.url(url).load()
+      t.ajax.url('data/'+filedate+'_'+b+'.json').load()
     }
   })
+
+  $('#data_select').on('change', function() {
+    ++count
+    filedate = $('#data_select option:selected').val()
+    $.each(filedata, function(key, val) {
+      if (filedate == val.filedate) {
+        d = val.begin.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+        beginDate = new Date(d[1], d[2]-1, d[3])
+        d = val.end.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+        endDate = new Date(d[1], d[2]-1, d[3])
+      }
+    })
+    waitForFiledate()
+  })
+
+  waitForFiledate()
 })
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -133,13 +188,21 @@ jQuery(function($, undefined) {
       </header>
       <main role="main">
         <div class="alert alert-info" style="margin-top: 1rem;">
-          <h5 class="text-center">ข้อมูลระหว่าง 3 พ.ค. 2561 00:00 น. ถึง 4 พ.ค. 2561 00:00 น.</h5>
+          <h5 class="text-center"><span id="data_date"></span></h5>
         </div>
         <div class="row">
           <div class="col-md-6 col-lg-5 offset-lg-1">
             <div class="button-wrapper hashtags-wrapper">
               Hashtags : <button type="button" class="btn btn-sm btn-primary" data-button="related">Related</button> <button type="button" class="btn btn-sm" data-button="bnk48">BNK48</button> <button type="button" class="btn btn-sm" data-button="1st">1st Gen</button> <button type="button" class="btn btn-sm" data-button="2nd">2nd Gen</button>
             </div>
+          </div>
+          <div class="col-md-6 col-lg-5">
+            <form>
+              <div class="form-group text-right">
+                <label for="data_select">Data</label>
+                <select class="form-control" id="data_select" style="display: inline-block; width: auto;"></select>
+              </div>
+            </form>
           </div>
         </div>
         <div class="row justify-content-center">
