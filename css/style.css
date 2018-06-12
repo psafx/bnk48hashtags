@@ -5,10 +5,20 @@
   }
 }
 
+.color-bnk48 {
+  color: #c58ec3 !important;
+}
+
+.alert-bnk48 {
+  background-color: #eabfe3;
+}
+
+.border-bnk48 {
+  border-color: #9d77ba !important;
+}
+
 body {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  font-family: Tahoma, sans-serif;
+  font-family: Tahoma, Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .header {
@@ -34,6 +44,13 @@ th {
   margin: 0 auto 30px;
 }
 
+.navbar-brand {
+  font-family: Kanit;
+  font-size: 1.5rem;
+  font-weight: 200;
+}
+
+.navbar-full,
 .navbar-reload {
   display: inline-block;
   width: 20px;
@@ -43,4 +60,66 @@ th {
   font-size: 1.25rem;
   line-height: inherit;
   white-space: nowrap;
+}
+
+.card-body {
+  font-size: 14px;
+
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.chart-wrapper .custom-control {
+  display: inline-block !important;
+  margin-right: 1em;
+}
+
+.chart-wrapper .custom-control:last-child {
+  margin-right: 0;
+}
+
+.inactive {
+  text-decoration: line-through;
+  opacity: .6;
+}
+
+#chart_legend {
+  text-align: center;
+  background-color: #fff;
+
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+#chart_legend ul {
+  padding: 4px 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+#chart_legend li {
+  display: inline-block;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#chart_legend span {
+  display: inline-block;
+  width: 15px;
+  height: 13px;
+  margin-right: 5px;
+  margin-left: 20px;
+}
+
+#chart_legend li:first-child span {
+  margin-left: 0;
+}
+
+#hashtag_chart {
+  margin: .5rem 0;
+  background-color: #fff;
 }

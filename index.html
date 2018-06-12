@@ -24,11 +24,13 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kanit:200,300,400">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css?v=201805031626">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css?v=201806111946">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="js/spin.js"></script>
@@ -79,9 +81,10 @@ jQuery(function($, undefined) {
     <div class="container">
       <header>
         <nav class="navbar navbar-expand-md">
+          <div class="navbar-brand">BNK48</div>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="index.html" id="dropdown_bnk48" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">BNK48 Hashtags</a>
+              <a class="nav-link dropdown-toggle" href="index.html" id="dropdown_bnk48" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hashtags</a>
               <div class="dropdown-menu" aria-labelledby="dropdown_bnk48">
                 <a class="dropdown-item" href="yesterday.html">Yesterday</a>
               </div>
@@ -90,10 +93,13 @@ jQuery(function($, undefined) {
         </nav>
       </header>
       <main role="main">
-        <div class="jumbotron" style="margin-top: 1rem;">
-          <p>ใช้ Standard Twitter Streaming API ในการตรวจสอบ Hashtag ของ BNK48 ทุกๆ 30 วินาที</p>
-          <p>ข้อมูลที่รวบรวมนี้ใช้ในการศึกษา ดูความสนใจของผู้ใช้ Twitter ที่เกี่ยวกับศิลปินวง BNK48 ผ่านทาง Hashtag เท่านั้น</p>
-          <p>ไม่ได้ใช้ในเชิงธุรกิจ ข้อมูลอาจไม่ถูกต้อง 100% โปรดใช้วิจารณญาณในการรับข้อมูล</p>
+        <div class="jumbotron" style="background-color: #eabfe3;">
+          <div class="container">
+            <h1 class="display-4 mb-4" style="font-family: Kanit; font-weight: 200; color: #fff;">BNK48 Hashtags</h1>
+            <p>ใช้ Standard Twitter Streaming API ในการตรวจสอบ Hashtag ของ BNK48 ทุกๆ 30 วินาที</p>
+            <p>ข้อมูลที่รวบรวมนี้ใช้ในการศึกษา ดูความสนใจของผู้ใช้ Twitter ที่เกี่ยวกับศิลปินวง BNK48 ผ่านทาง Hashtag เท่านั้น</p>
+            <p>ไม่ได้ใช้ในเชิงธุรกิจ ข้อมูลอาจไม่ถูกต้อง 100% โปรดใช้วิจารณญาณในการรับข้อมูล</p>
+          </div>
         </div>
       </main>
       <footer class="footer">
