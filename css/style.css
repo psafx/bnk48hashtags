@@ -71,6 +71,11 @@ th {
           user-select: none;
 }
 
+a,
+a:hover {
+  color: #0099b9;
+}
+
 .chart-wrapper .custom-control {
   display: inline-block !important;
   margin-right: 1em;
@@ -96,13 +101,15 @@ th {
 }
 
 #chart_legend ul {
-  padding: 4px 0;
+  padding: 8px 15px;
   margin: 0;
   list-style-type: none;
+  border: dashed 1px #bbb;
 }
 
 #chart_legend li {
   display: inline-block;
+  margin-right: 10px;
   font-size: 15px;
   cursor: pointer;
 }
@@ -112,7 +119,7 @@ th {
   width: 15px;
   height: 13px;
   margin-right: 5px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 #chart_legend li:first-child span {
@@ -120,6 +127,6 @@ th {
 }
 
 #hashtag_chart {
-  margin: .5rem 0;
+  margin-bottom: .5rem;
   background-color: #fff;
 }
